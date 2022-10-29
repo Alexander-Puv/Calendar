@@ -1,8 +1,26 @@
 import { Calendar } from 'antd'
-import React from 'react'
+import { Moment } from 'moment'
+import { FC } from 'react'
+import { IEvent } from '../models/IEvent'
 
-export const EventCalendar = () => {
+interface EventCalendarProps {
+    events: IEvent[]
+}
+
+export const EventCalendar: FC<EventCalendarProps> = (props) => {
+    const dateCellRender = (value: Moment) => {
+        const formatedData = value.format('YYYY-MM-DD');
+        const currentDayEvents = props.events.filter(ev => ev.date === formatedData);
+        return (
+            <div>
+                {currentDayEvents.map((ev, index) => 
+                    <div key={index}>{ev.description}</div>
+                )}
+            </div>
+        );
+    };
+
     return (
-        <Calendar />
+        <Calendar dateCellRender={dateCellRender} />
     )
 }

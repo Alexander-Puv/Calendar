@@ -1,5 +1,5 @@
-import axios from "axios";
 import { AppDispatch } from "../..";
+import UserService from "../../../api/UserService";
 import { IUser } from "../../../models/IUser";
 import { AuthActionEnum, SetErrorAction, SetIsAuthAction, SetIsLoadingAction, SetUserAction } from "./types";
 
@@ -12,15 +12,15 @@ export const AuthActionCreators = {
         try {
             dispatch(AuthActionCreators.setIsLoading(true));
             setTimeout(async () => {
-                const response = await axios.get<IUser[]>('./users.json');
+                const response = await UserService.getUsers();
                 const mockUsers = response.data.find(user => user.username === username && user.password === password);
                 if (mockUsers) {
                     localStorage.setItem('auth', 'true');
                     localStorage.setItem('username', mockUsers.username);
-                    dispatch(AuthActionCreators.setIsAuth(true))
-                    dispatch(AuthActionCreators.setUser(mockUsers))
+                    dispatch(AuthActionCreators.setUser(mockUsers));
+                    dispatch(AuthActionCreators.setIsAuth(true));
                 } else {
-                    dispatch(AuthActionCreators.setError('Uncorrect username or password'))
+                    dispatch(AuthActionCreators.setError('Uncorrect username or password'));
                 }
                 dispatch(AuthActionCreators.setIsLoading(false));
             }, 1000)
