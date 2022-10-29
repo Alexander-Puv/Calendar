@@ -10,7 +10,7 @@ export const rules = {
             if (value.isSameOrAfter(moment())) {
                 return Promise.resolve();
             }
-            return Promise.reject(message);
+            return Promise.reject(new Error(message));
         }
     })
 }

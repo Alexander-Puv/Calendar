@@ -15,7 +15,7 @@ export const Event: FC = () => {
     useEffect(() => {
         fetchGuests();
         fetchEvents(username);
-    })
+    }, [])
 
     const addNewEvent = (event: IEvent) => {
         setIsModalOpen(false);
